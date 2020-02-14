@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using Server.Domain.Services.Coverage;
+using Server.Domain.Services.FormFileStorage;
 
 namespace Server
 {
@@ -29,6 +30,7 @@ namespace Server
         {
             services.AddControllers();
             services.AddScoped<ICoverageService, CoverageService>();
+            services.AddScoped<IFormFileStorage, FileSystemStorage>();
             services.AddAutoMapper(typeof(Startup));
         }
 
