@@ -8,10 +8,10 @@ namespace Server.Domain.Services
     public class ServiceResult<T>
     {
 
-        public T result { get; private set; }
-        public ServiceError error { get; private set; }
+        public T result { get; }
+        public ServiceError error { get; }
 
-        public bool isSuccess => error == null;
+        public bool isSuccess => error is null;
 
 
         public ServiceResult(T result) => this.result = result;

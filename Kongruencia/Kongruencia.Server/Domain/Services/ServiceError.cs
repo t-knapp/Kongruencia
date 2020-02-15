@@ -8,15 +8,12 @@ namespace Server.Domain.Services
     public class ServiceError
     {
 
-        public string message { get; private set; }
-        public Exception exception { get; private set; }
+        public string message { get; }
+        public Exception exception { get; }
 
 
-        public ServiceError(string message, Exception exception = null)
-        {
-            this.message = message;
-            this.exception = exception;
-        }
+        public ServiceError( string message, Exception exception = null )
+            => (this.message, this.exception) = (message, exception);
 
 
         public override string ToString() => message + Environment.NewLine + exception?.ToString() ?? "";
