@@ -27,8 +27,10 @@ namespace Kongruencia.Server
             services.AddEntityFrameworkSqlite().AddDbContext<SQLiteContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddControllers()
-                .AddXmlSerializerFormatters();
+            services.AddControllers();
+            services.AddMvcCore()
+                .AddXmlSerializerFormatters()
+                .AddXmlDataContractSerializerFormatters();
 
             services.AddScoped<ICoverageService, CoverageService>();
             services.AddAutoMapper(typeof(Startup));

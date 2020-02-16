@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 
 namespace Kongruencia.Server {
 
+    [XmlRoot(ElementName = "metadata")]
     public class AddCoverageResource
     {
         [XmlAttribute( "productname" )]
@@ -22,7 +23,7 @@ namespace Kongruencia.Server {
         [Required]
         public int Buildnumber { get; set; }
 
-        [XmlAttribute( "coverage" )]
+        [XmlElement( "coverage" )]
         [Required]
         public coverage Coverage { get; set; }
     }
