@@ -48,7 +48,7 @@ namespace Kongruencia.Server {
             if (!addResult.isSuccess)
                 return BadRequest();
 
-            return CreatedAtAction( nameof( Get ), new { id = addResult.result.id } );
+            return CreatedAtAction( nameof( Get ), new { id = addResult.result.Id } );
         }
 
     }

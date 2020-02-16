@@ -9,22 +9,13 @@ namespace Kongruencia.Server {
     public class CoverageService : ICoverageService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IProductService _produtService;
 
-        public CoverageService(IUnitOfWork unitOfWork, IProductService productService) =>
-            (_unitOfWork, _produtService) = (unitOfWork, productService);
+        public CoverageService(IUnitOfWork unitOfWork) => (_unitOfWork) = (unitOfWork);
 
         public async Task<ServiceResult<Coverage>> AddAsync(Coverage coverage)
         {
-            // TODO: Create Product
-            // TODO: Create Branch
-            // TODO: Create Coverage
-            // TODO: Create Files?
-
-            //_produtService.AddProductAsync()
-
+            await _unitOfWork.coverageRepository.AddAsync(coverage);
             await _unitOfWork.CompleteAsync();
-
             return new ServiceResult<Coverage>(coverage);
         }
     }
