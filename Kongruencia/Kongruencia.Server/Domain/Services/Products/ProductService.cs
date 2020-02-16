@@ -14,15 +14,15 @@ namespace Kongruencia.Server {
 		public ProductService( IUnitOfWork unitOfWork ) => _unitOfWork = unitOfWork;
 
 
-		public Task<Product> AddProductAsync( string productName, CancellationToken cancellationToken = default ) {
+		public Task<ServiceResult<Product>> AddProductAsync( string productName, CancellationToken cancellationToken = default ) {
 			_unitOfWork.productRepository.AddAsync( new Product( productName ), cancellationToken );
 			return null;
 		}
-		public Task<Branch> AddBranchAsync( int productID, string branchName, CancellationToken cancellationToken = default ) {
+		public Task<ServiceResult<Branch>> AddBranchAsync( int productID, string branchName, CancellationToken cancellationToken = default ) {
 
 			return null;
 		}
-		public Task<Build> AddBuildAsync( int productID, int branchID, int buildNumber, Coverage coverage, CancellationToken cancellationToken = default ) {
+		public Task<ServiceResult<Build>> AddBuildAsync( int productID, int branchID, int buildNumber, Coverage coverage, CancellationToken cancellationToken = default ) {
 
 			return null;
 		}

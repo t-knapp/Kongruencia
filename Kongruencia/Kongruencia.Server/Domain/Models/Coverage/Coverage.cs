@@ -18,5 +18,10 @@ namespace Kongruencia.Server
         public Build build { get; private set; }
 
         public IEnumerable<Package> packages { get; private set; }
+
+        public Coverage()
+        {
+
+        }
     }
 }
