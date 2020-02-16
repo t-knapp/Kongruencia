@@ -15,5 +15,11 @@ namespace Kongruencia.Server
         private readonly IMapper _mapper;
         private readonly IProductService _productService;
 
+
+        public ProductsController( ILogger logger, IMapper mapper, IProductService productService )
+            => (_logger, _mapper, _productService) = (logger, mapper, productService);
+
+
+        public 
     }
 }

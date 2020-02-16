@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace Kongruencia.Server {
 
-	public interface IProductService {
+	public class BranchService : IBranchService {
+
 
 	}
 }
