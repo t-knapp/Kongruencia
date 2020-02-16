@@ -27,11 +27,13 @@ namespace Kongruencia.Server {
             return NotFound();
         }
 
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<CoverageResource>>> Get(
-            [FromQuery] string productName,[FromQuery] string branchName, [FromQuery] int buildNumber
+            [FromQuery] string productName = null, [FromQuery] string branchName = null, [FromQuery] int buildNumber = -1
         )
         {
-            return null;
+            var result = await _coverageService.ListAsync(productName, branchName, buildNumber);
+            return Ok(result.result);
         }
 
         [HttpPost]
