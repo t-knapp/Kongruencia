@@ -7,7 +7,7 @@ namespace Kongruencia.Server {
 
     public interface ICoverageService
     {
-        Task<ServiceResult<bool>> AddAsync(Coverage coverage);
+        Task<ServiceResult<Coverage>> AddAsync(Coverage coverage);
         // TODO: GetAsync
         // TODO: ListAsync
     }

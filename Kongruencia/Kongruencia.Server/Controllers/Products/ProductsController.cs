@@ -19,7 +19,5 @@ namespace Kongruencia.Server
         public ProductsController( ILogger logger, IMapper mapper, IProductService productService )
             => (_logger, _mapper, _productService) = (logger, mapper, productService);
 
-
-        public 
     }
 }

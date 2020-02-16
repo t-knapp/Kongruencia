@@ -13,11 +13,11 @@ namespace Kongruencia.Server {
     [ApiController]
     public class CoveragesController : ControllerBase
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<CoveragesController> _logger;
         private readonly IMapper _mapper;
         private readonly ICoverageService _coverageService;
 
-        public CoveragesController( ILogger logger, IMapper mapper, ICoverageService coverageService)
+        public CoveragesController( ILogger<CoveragesController> logger, IMapper mapper, ICoverageService coverageService)
             => (_logger, _mapper, _coverageService) = (logger, mapper, coverageService);
 
         
@@ -42,14 +42,12 @@ namespace Kongruencia.Server {
             if( !ModelState.IsValid )
                 return BadRequest();
 
-            //var coverage = _mapper.Map<Domain.Models.Coverage>(addCoverageResource);
-            //var addResult = await _coverageService.AddAsync(coverage);
-            //if (addResult.isSuccess)
-            //    return Ok("Stored to: " + storageResult.result + "; " + coverage.CoveredStatements + "/" + coverage.Statements);
+            var coverage = _mapper.Map<Coverage>(addCoverageResource);
+            var addResult = await _coverageService.AddAsync(coverage);
+            if (!addResult.isSuccess)
+                return BadRequest();
 
-            int id = 0;
-
-            return CreatedAtAction( nameof( Get ), new { id = id } );
+            return CreatedAtAction( nameof( Get ), new { id = addResult.result.id } );
         }
 
     }

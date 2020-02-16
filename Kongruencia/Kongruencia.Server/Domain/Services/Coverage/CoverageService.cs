@@ -13,11 +13,16 @@ namespace Kongruencia.Server {
         public CoverageService(IUnitOfWork unitOfWork) 
             => _unitOfWork = unitOfWork;
 
-        public Task<ServiceResult<bool>> AddAsync(Coverage coverage)
+        public async Task<ServiceResult<Coverage>> AddAsync(Coverage coverage)
         {
-            // TODO: Store to DB
+            // TODO: Create Product
+            // TODO: Create Branch
+            // TODO: Create Coverage
+            // TODO: Create Files?
 
-            return Task.FromResult(new ServiceResult<bool>(true));
+            await _unitOfWork.CompleteAsync();
+
+            return new ServiceResult<Coverage>(coverage);
         }
     }
 }
