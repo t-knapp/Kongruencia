@@ -7,8 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Server
-{
+namespace Kongruencia.Server {
+
     public class Program
     {
         public static async Task Main(string[] args) => await CreateHostBuilder(args).Build().RunAsync();

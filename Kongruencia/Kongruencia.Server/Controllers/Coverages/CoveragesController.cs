@@ -5,44 +5,52 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Server.Domain.Services.Coverage;
-using Server.Domain.Services.FormFileStorage;
+using Microsoft.Extensions.Logging;
 
-namespace Server.Controllers.Coverages
-{
+namespace Kongruencia.Server {
+
     [Route("api/[controller]")]
     [ApiController]
     public class CoveragesController : ControllerBase
     {
+        private readonly ILogger _logger;
         private readonly IMapper _mapper;
         private readonly ICoverageService _coverageService;
-        private readonly IFormFileStorage _formFileStorage;
 
-        public CoveragesController(IMapper mapper, ICoverageService coverageService, IFormFileStorage formFileStorage)
+        public CoveragesController( ILogger logger, IMapper mapper, ICoverageService coverageService)
+            => (_logger, _mapper, _coverageService) = (logger, mapper, coverageService);
+
+        
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CoverageResource>> Get(int id)
         {
-            _mapper = mapper;
-            _coverageService = coverageService;
-            _formFileStorage = formFileStorage;
+            return NotFound();
         }
 
-        [HttpPost("{productName}/{branchName}/{buildNumber}")]
-        public async Task<IActionResult> Post(string productName, string branchName, int buildNumber, IFormFile coverageFile)
+        public async Task<ActionResult<IEnumerable<CoverageResource>>> Get(
+            [FromQuery] string productName,[FromQuery] string branchName, [FromQuery] int buildNumber
+        )
         {
-            var addResource = new AddCoverageResource(productName, branchName, buildNumber);
-            if (Object.ReferenceEquals(coverageFile, null) || coverageFile.Length == 0 || !addResource.Valid)
-                return BadRequest();
-
-            var storageResult = await _formFileStorage.Save(coverageFile);
-            if (!storageResult.isSuccess)
-                return BadRequest();
-
-            addResource.FilePath = storageResult.result;
-            var coverage = _mapper.Map<Domain.Models.Coverage>(addResource);
-            var addResult = await _coverageService.AddAsync(coverage);
-            if (addResult.isSuccess)
-                return Ok("Stored to: " + storageResult.result + "; " + coverage.CoveredStatements + "/" + coverage.Statements);
-
-            return BadRequest();
+            return null;
         }
+
+        [HttpPost]
+        [ProducesResponseType( StatusCodes.Status201Created )]
+        [ProducesResponseType( StatusCodes.Status400BadRequest )]
+        public async Task<IActionResult> Post([FromBody] AddCoverageResource addCoverageResource)
+        {
+            if( !ModelState.IsValid )
+                return BadRequest();
+
+            //var coverage = _mapper.Map<Domain.Models.Coverage>(addCoverageResource);
+            //var addResult = await _coverageService.AddAsync(coverage);
+            //if (addResult.isSuccess)
+            //    return Ok("Stored to: " + storageResult.result + "; " + coverage.CoveredStatements + "/" + coverage.Statements);
+
+            int id = 0;
+
+            return CreatedAtAction( nameof( Get ), new { id = id } );
+        }
+
     }
 }

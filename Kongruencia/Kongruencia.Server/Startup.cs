@@ -11,10 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
-using Server.Domain.Services.Coverage;
-using Server.Domain.Services.FormFileStorage;
 
-namespace Server
+namespace Kongruencia.Server
 {
     public class Startup
     {
@@ -26,9 +24,13 @@ namespace Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddEntityFrameworkSqlite().AddDbContext<SQLiteContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddControllers()
+                .AddXmlSerializerFormatters();
+
             services.AddScoped<ICoverageService, CoverageService>();
-            services.AddScoped<IFormFileStorage, FileSystemStorage>();
             services.AddAutoMapper(typeof(Startup));
         }
 
