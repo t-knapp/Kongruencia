@@ -12,6 +12,7 @@ namespace Kongruencia.Server {
         public string BranchName { get; set; }
         public int BuildNumber { get; set; }
 
+
         public CoverageResource(string productName, string branchName, int buildNumber) =>
             (ProductName, BranchName, BuildNumber) = (productName, branchName, buildNumber);
 

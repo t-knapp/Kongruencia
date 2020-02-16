@@ -20,6 +20,6 @@ namespace Kongruencia.Server
             => (_logger, _mapper, _productService) = (logger, mapper, productService);
 
 
-        public 
+        
     }
 }
