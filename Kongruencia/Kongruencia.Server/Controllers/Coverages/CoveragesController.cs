@@ -22,12 +22,12 @@ namespace Kongruencia.Server {
         [HttpGet("{id}")]
         public async Task<ActionResult<CoverageResource>> Get(int id)
         {
-            var getResult = await _coverageService.GetAsync(id);
+            var result = await _coverageService.GetAsync(id);
 
-            if (!getResult.isSuccess)
+            if (!result.isSuccess)
                 return NotFound();
 
-            return Ok(getResult);
+            return Ok(result.result);
         }
 
         [HttpGet]
@@ -56,7 +56,7 @@ namespace Kongruencia.Server {
             var coverage = _mapper.Map<Coverage>(addCoverageResource);
             var addResult = await _coverageService.AddAsync(coverage);
             if (!addResult.isSuccess)
-                return BadRequest();
+                return BadRequest(addResult.error.message);
 
             return CreatedAtAction( nameof( Get ), new { id = addResult.result.Id } );
         }

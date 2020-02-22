@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LinqKit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -15,45 +16,14 @@ namespace Kongruencia.Server {
 
         public async Task<ServiceResult<IEnumerable<Coverage>>> ListAsync(string productName, string branchName, int buildNumber = -1)
         {
-            IEnumerable<Coverage> list;
-            /*
-            Expression<Func<Coverage, bool>> expression = coverage => true;
-            BinaryExpression ex;
+            var predicate = PredicateBuilder.New<Coverage>(true);
             if (!(productName is null))
-            {
-                Expression<Func<Coverage, bool>> productNameExpression = coverage => coverage.ProductName.Equals(productName);
-                ex = Expression.And(expression, productNameExpression);
-            }
-
+                predicate = predicate.And(c => c.ProductName.Equals(productName));
             if (!(branchName is null))
-            {
-                Expression<Func<Coverage, bool>> branchNameExpression = coverage => coverage.BranchName.Equals(branchName);
-                ex = Expression.And(ex, branchNameExpression);
-            }
-            list = await _unitOfWork.coverageRepository.GetAsync(expression);
-            */
-
-
-            /*
-            list = await _unitOfWork.coverageRepository.GetAsync(
-                c =>
-                {
-                    bool matches = true;
-                    if (!(productName is null))
-                        matches = false
-
-                    return matches;
-                }
-            );
-            */
-
-            if (productName is null && branchName is null && buildNumber is -1)
-                list = await _unitOfWork.coverageRepository.GetAsync();
-            else 
-                list = await _unitOfWork.coverageRepository.GetAsync(
-                    c => c.ProductName == productName && c.BranchName == branchName && c.BuildNumber == buildNumber
-                );
-
+                predicate = predicate.And(c => c.BranchName.Equals(branchName));
+            if (!(buildNumber is -1))
+                predicate = predicate.And(c => c.BuildNumber == buildNumber);
+            var list = await _unitOfWork.coverageRepository.GetAsync(predicate);
             return new ServiceResult<IEnumerable<Coverage>>(list);
         }
 
@@ -65,6 +35,10 @@ namespace Kongruencia.Server {
 
         public async Task<ServiceResult<Coverage>> AddAsync(Coverage coverage)
         {
+            var list = await ListAsync(coverage.ProductName, coverage.BranchName, coverage.BuildNumber);
+            if (list.isSuccess && list.result.Count() > 0)
+                return new ServiceResult<Coverage>("Coverage already exists");
+
             await _unitOfWork.coverageRepository.AddAsync(coverage);
             await _unitOfWork.CompleteAsync();
             return new ServiceResult<Coverage>(coverage);
