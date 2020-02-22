@@ -14,16 +14,9 @@ namespace Kongruencia.Server {
 
         public CoverageService(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
-        public async Task<ServiceResult<IEnumerable<Coverage>>> ListAsync(string productName, string branchName, int buildNumber = -1)
+        public async Task<ServiceResult<IEnumerable<Coverage>>> ListAsync(Expression<Func<Coverage, bool>> filter = null)
         {
-            var predicate = PredicateBuilder.New<Coverage>(true);
-            if (!(productName is null))
-                predicate = predicate.And(c => c.ProductName.Equals(productName));
-            if (!(branchName is null))
-                predicate = predicate.And(c => c.BranchName.Equals(branchName));
-            if (!(buildNumber is -1))
-                predicate = predicate.And(c => c.BuildNumber == buildNumber);
-            var list = await _unitOfWork.coverageRepository.GetAsync(predicate);
+            var list = await _unitOfWork.coverageRepository.GetAsync(filter);
             return new ServiceResult<IEnumerable<Coverage>>(list);
         }
 
@@ -35,7 +28,11 @@ namespace Kongruencia.Server {
 
         public async Task<ServiceResult<Coverage>> AddAsync(Coverage coverage)
         {
-            var list = await ListAsync(coverage.ProductName, coverage.BranchName, coverage.BuildNumber);
+            var list = await ListAsync(
+                c => c.ProductName.Equals(coverage.ProductName) && 
+                     c.BranchName.Equals(coverage.BranchName) &&
+                     c.BuildNumber == coverage.BuildNumber
+            );
             if (list.isSuccess && list.result.Count() > 0)
                 return new ServiceResult<Coverage>("Coverage already exists");
 

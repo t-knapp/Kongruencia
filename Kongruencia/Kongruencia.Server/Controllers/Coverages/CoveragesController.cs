@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using LinqKit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -34,10 +35,27 @@ namespace Kongruencia.Server {
         public async Task<ActionResult<IEnumerable<CoverageResource>>> Get(
             [FromQuery] string productName = null,
             [FromQuery] string branchName = null,
-            [FromQuery] int buildNumber = -1
+            [FromQuery] int buildNumber = -1,
+            [FromQuery] DateTime? startDate = null,
+            [FromQuery] DateTime? endDate = null
         )
         {
-            var result = await _coverageService.ListAsync(productName, branchName, buildNumber);
+            if (!(startDate is null) && !(endDate is null) && startDate > endDate)
+                return BadRequest("End date must be greater than start date");
+
+            var predicate = PredicateBuilder.New<Coverage>(true);
+            if (!(productName is null))
+                predicate = predicate.And(c => c.ProductName.Equals(productName));
+            if (!(branchName is null))
+                predicate = predicate.And(c => c.BranchName.Equals(branchName));
+            if (!(buildNumber is -1))
+                predicate = predicate.And(c => c.BuildNumber == buildNumber);
+            if (!(startDate is null))
+                predicate = predicate.And(c => c.Timestamp > startDate);
+            if (!(endDate is null))
+                predicate = predicate.And(c => c.Timestamp < endDate);
+
+            var result = await _coverageService.ListAsync(predicate);
             if (!result.isSuccess)
                 return NotFound();
 
