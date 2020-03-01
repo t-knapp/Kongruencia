@@ -26,7 +26,6 @@ namespace Kongruencia.Server
         {
             services.AddEntityFrameworkSqlite().AddDbContext<SQLiteContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IProductService, ProductService>();
 
             services.AddControllers();
             services.AddMvcCore()
