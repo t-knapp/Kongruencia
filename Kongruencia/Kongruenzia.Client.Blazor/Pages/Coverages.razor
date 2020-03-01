@@ -1,0 +1,15 @@
+﻿@page "/coverages/{Id:int}"
+
+<h1>Coverages</h1>
+
+<p>TODO: Fetch coverage @Id</p>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Id = Id;
+    }
+}
