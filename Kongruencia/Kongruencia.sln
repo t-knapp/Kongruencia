@@ -5,9 +5,12 @@ VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kongruencia.Server", "Kongruencia.Server\Kongruencia.Server.csproj", "{3F94221C-6953-4CE6-A148-4F0C3D56D0E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kongruenzia.Client.Blazor", "Kongruenzia.Client.Blazor\Kongruenzia.Client.Blazor.csproj", "{A746FD2B-FD3A-4BD9-8D17-B33FD58005DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kongruenzia.Client.Blazor", "Kongruenzia.Client.Blazor\Kongruenzia.Client.Blazor.csproj", "{A746FD2B-FD3A-4BD9-8D17-B33FD58005DB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3F94221C-6953-4CE6-A148-4F0C3D56D0E4} = {3F94221C-6953-4CE6-A148-4F0C3D56D0E4}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kongruencia.Data", "Kongruencia.Data\Kongruencia.Data.csproj", "{2949910E-9622-44F8-BCA4-EE7D74F33291}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kongruencia.Data", "Kongruencia.Data\Kongruencia.Data.csproj", "{2949910E-9622-44F8-BCA4-EE7D74F33291}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

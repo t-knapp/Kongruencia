@@ -1,6 +1,32 @@
-﻿@page "/projects"
+﻿@using System.Net.Http
+@inject HttpClient Http
+
+@page "/projects"
 <!DOCTYPE html>
 
 <h1>Projects</h1>
 
-<p>TODO: Fetch and display all Projects</p>
+@if (ProductNames is null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+<ul>
+    @foreach (var productName in ProductNames)
+    {
+    <li>
+        <NavLink class="nav-link" href="branches">
+            @productName
+        </NavLink>
+    </li>
+    }
+</ul>
+}
+
+@code {
+    public string[] ProductNames { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        ProductNames = await Http.GetJsonAsync<string[]>("https://localhost:5001/api/products");
+}
