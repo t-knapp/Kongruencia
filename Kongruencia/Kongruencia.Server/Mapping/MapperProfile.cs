@@ -16,6 +16,7 @@ namespace Kongruencia.Server {
                 .ForMember(dest => dest.Metrics, opt => opt.MapFrom(src => src.Coverage.project.metrics))
                 .ForMember(dest => dest.Timestamp, opt => opt.MapFrom(src => src.Coverage.generated));
             CreateMap<Coverage, CoverageResource>();
+            CreateMap<Coverage, BranchResource>();
         }
     }
 
