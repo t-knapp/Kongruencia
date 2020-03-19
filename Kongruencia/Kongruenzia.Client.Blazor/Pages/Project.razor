@@ -1,0 +1,35 @@
+﻿@using Kongruencia.Data.Domain.Models
+@using System.Net.Http
+@inject HttpClient Http
+
+@page "/project/{ProjectName}"
+
+<h1>Project: @ProjectName</h1>
+
+@if (Branches is null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <h2>Branches</h2>
+    <ul>
+        @foreach (var branch in Branches)
+        {
+            <li>
+                <NavLink class="nav-link" href="project/">
+                    @branch.BranchName
+                </NavLink>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    [Parameter]
+    public string ProjectName { get; set; }
+    public Branch[] Branches { get; set; }
+
+    protected override async Task OnInitializedAsync() => 
+        Branches = await Http.GetJsonAsync<Branch[]>("https://localhost:5001/api/branches/" + ProjectName);
+}

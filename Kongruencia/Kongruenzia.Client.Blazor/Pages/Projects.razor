@@ -16,7 +16,7 @@ else
     @foreach (var productName in ProductNames)
     {
     <li>
-        <NavLink class="nav-link" href="branches">
+        <NavLink class="nav-link" href="@(CreateLink( productName ))">
             @productName
         </NavLink>
     </li>
@@ -29,4 +29,9 @@ else
 
     protected override async Task OnInitializedAsync() =>
         ProductNames = await Http.GetJsonAsync<string[]>("https://localhost:5001/api/products");
+
+    public string CreateLink(string productName)
+    {
+        return "project/" + productName;
+    }
 }
