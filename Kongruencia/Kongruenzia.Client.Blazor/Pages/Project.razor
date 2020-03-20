@@ -1,6 +1,6 @@
 ﻿@using Kongruencia.Data.Domain.Models
 @using System.Net.Http
-@using System;
+@using System.Web;
 
 @inject HttpClient Http
 
@@ -33,10 +33,10 @@ else
     public Branch[] Branches { get; set; }
 
     protected override async Task OnInitializedAsync() =>
-        Branches = await Http.GetJsonAsync<Branch[]>("https://localhost:5001/api/branches/" + ProjectName);
+        Branches = await Http.GetJsonAsync<Branch[]>("https://localhost:5001/api/branches/" + HttpUtility.UrlEncode(ProjectName));
 
     public string CreateLink(string branchName)
     {
-        return String.Format("project/{0}/branch/{1}", this.ProjectName, Uri.EscapeUriString(branchName));
+        return String.Format("project/{0}/branch/{1}", HttpUtility.UrlEncode(this.ProjectName), HttpUtility.UrlEncode(branchName));
     }
 }

@@ -7,11 +7,11 @@ namespace Kongruencia.Data.Domain.Models
 {
     public class Coverage
     {
-        public int Id { get; private set; } 
-        public DateTime Timestamp { get; private set; }
-        public Metrics Metrics { get; private set; }
-        public string ProductName { get; private set; }
-        public string BranchName { get; private set; }
-        public int BuildNumber { get; private set; }
+        public int Id { get; set; } 
+        public DateTime Timestamp { get; set; }
+        public Metrics Metrics { get; set; }
+        public string ProductName { get; set; }
+        public string BranchName { get; set; }
+        public int BuildNumber { get; set; }
     }
 }

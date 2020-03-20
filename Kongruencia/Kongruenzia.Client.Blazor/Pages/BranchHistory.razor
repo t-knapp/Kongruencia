@@ -1,0 +1,56 @@
+﻿@using Kongruencia.Data.Domain.Models
+@using System.Net.Http
+@using System.Web;
+
+@inject HttpClient Http
+
+@page "/project/{ProjectName}/branch/{BranchName}"
+
+<h1>Branch History</h1>
+<h2>Project: @(ProjectName)</h2>
+<h3>Branch: @(BranchName)</h3>
+
+@if (Coverages is null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <p>Coverages: @(Coverages.Length)</p>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Time</th>
+            <th>Statements</th>
+            <th>Branches</th>
+            <th>Functions</th>
+
+        </tr>
+        @foreach (var coverage in Coverages)
+        {
+            <tr>
+                <td>@(coverage.BuildNumber)</td>
+                <td>@(coverage.Timestamp)</td>
+                <td>@(coverage.Metrics.coveredstatements + " / " + coverage.Metrics.statements)</td>
+                <td>@(coverage.Metrics.coveredconditionals + " / " + coverage.Metrics.conditionals)</td>
+                <td>@(coverage.Metrics.coveredmethods + " / " + coverage.Metrics.methods)</td>
+            </tr>
+        }
+    </table>
+}
+
+@code {
+    [Parameter]
+    public string ProjectName { get; set; }
+    [Parameter]
+    public string BranchName { get; set; }
+    public Coverage[] Coverages { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        Coverages = await Http.GetJsonAsync<Coverage[]>(
+            String.Format(
+                "https://localhost:5001/api/coverages?productName={0}&branchName={1}",
+                HttpUtility.UrlEncode(ProjectName),
+                HttpUtility.UrlEncode(BranchName)
+            ));
+}

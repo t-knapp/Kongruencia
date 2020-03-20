@@ -8,11 +8,11 @@ namespace Kongruencia.Data.Domain.Models
 {
     [Owned]
     public class Metrics {
-        public int statements { get; private set; }
-        public int coveredstatements { get; private set; }
-        public int conditionals { get; private set; }
-        public int coveredconditionals { get; private set; }
-        public int methods { get; private set; }
-        public int coveredmethods { get; private set; }
+        public int statements { get; set; }
+        public int coveredstatements { get; set; }
+        public int conditionals { get; set; }
+        public int coveredconditionals { get; set; }
+        public int methods { get; set; }
+        public int coveredmethods { get; set; }
     }
 }
