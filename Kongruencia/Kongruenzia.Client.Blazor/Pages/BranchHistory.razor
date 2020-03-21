@@ -129,8 +129,8 @@ else
 
         var statementsDataset = new LineDataset<TimeTuple<int>>
         {
-            BackgroundColor = "#e33030",
-            BorderColor = "#e33030",
+            BackgroundColor = "#3054e3",
+            BorderColor = "#3054e3",
             Label = "Total Statements",
             Fill = false,
             BorderWidth = 2,
@@ -153,9 +153,22 @@ else
         };
         coveredStatementsDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.coveredstatements)));
 
+        var uncoveredStatementsDataset = new LineDataset<TimeTuple<int>>
+        {
+            BackgroundColor = "#e33030",
+            BorderColor = "#e33030",
+            Label = "Uncovered Statements",
+            Fill = false,
+            BorderWidth = 2,
+            PointRadius = 3,
+            PointBorderWidth = 1,
+            SteppedLine = SteppedLine.Before
+        };
+        uncoveredStatementsDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.statements - c.Metrics.coveredstatements)));
 
         _lineConfig.Data.Datasets.Add(statementsDataset);
         _lineConfig.Data.Datasets.Add(coveredStatementsDataset);
+        _lineConfig.Data.Datasets.Add(uncoveredStatementsDataset);
     }
 
 }
