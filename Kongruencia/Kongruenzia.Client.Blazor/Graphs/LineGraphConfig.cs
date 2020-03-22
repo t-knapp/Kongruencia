@@ -25,15 +25,15 @@ namespace Kongruenzia.Client.Blazor.Graphs
                     },
                     Legend = new Legend
                     {
-                        Position = Position.Right,
+                        Position = Position.Top,
                         Labels = new LegendLabelConfiguration
                         {
-                            UsePointStyle = true
+                            UsePointStyle = false
                         }
                     },
                     Tooltips = new Tooltips
                     {
-                        Mode = InteractionMode.Nearest,
+                        Mode = InteractionMode.Index,
                         Intersect = false
                     },
                     Scales = new Scales
@@ -59,7 +59,7 @@ namespace Kongruenzia.Client.Blazor.Graphs
                                     LabelString = "Time"
                                 }
                             }
-                        },
+                        }
                     },
                     Hover = new LineOptionsHover
                     {
