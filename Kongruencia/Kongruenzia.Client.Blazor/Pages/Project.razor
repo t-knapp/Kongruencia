@@ -19,7 +19,7 @@ else
         @foreach (var branch in Branches)
         {
             <li>
-                <NavLink class="nav-link" href="@(CreateLink(branch.BranchName))">
+                <NavLink class="nav-link" href="@(CreateHistoryLink(branch.BranchName))">
                     @branch.BranchName
                 </NavLink>
             </li>
@@ -35,8 +35,8 @@ else
     protected override async Task OnInitializedAsync() =>
         Branches = await Http.GetJsonAsync<Branch[]>("https://localhost:5001/api/branches/" + HttpUtility.UrlEncode(ProjectName));
 
-    public string CreateLink(string branchName)
+    public string CreateHistoryLink(string branchName)
     {
-        return String.Format("project/{0}/branch/{1}", HttpUtility.UrlEncode(this.ProjectName), HttpUtility.UrlEncode(branchName));
+        return String.Format("history/{0}/branch/{1}", HttpUtility.UrlEncode(this.ProjectName), HttpUtility.UrlEncode(branchName));
     }
 }

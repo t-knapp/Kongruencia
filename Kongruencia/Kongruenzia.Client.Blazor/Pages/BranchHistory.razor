@@ -8,7 +8,7 @@
 
 @inject HttpClient Http
 
-@page "/project/{ProjectName}/branch/{BranchName}"
+@page "/history/{ProjectName}/branch/{BranchName}"
 
 <h1>Branch History</h1>
 <h2>Project: @(ProjectName)</h2>
@@ -47,13 +47,13 @@ else
 
         _lineConfig = LineGraphConfig.Create("Statements");
 
-        var statementsDataset = CoverageDataset.Create<TimeTuple<int>>("Total Statements", "#3054e3", "#3054e3");
+        var statementsDataset = CoverageDataset.Create<TimeTuple<int>>("Total", "#034990", "#034990");
         statementsDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.statements)));
 
-        var coveredStatementsDataset = CoverageDataset.Create<TimeTuple<int>>("Covered Statements", "#3fe330", "#3fe330");
+        var coveredStatementsDataset = CoverageDataset.Create<TimeTuple<int>>("Covered", "#66ff00", "#66ff00");
         coveredStatementsDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.coveredstatements)));
 
-        var uncoveredStatementsDataset = CoverageDataset.Create<TimeTuple<int>>("Uncovered Statements", "#e33030", "#e33030");
+        var uncoveredStatementsDataset = CoverageDataset.Create<TimeTuple<int>>("Uncovered", "#ff0000", "#ff0000");
         uncoveredStatementsDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.statements - c.Metrics.coveredstatements)));
 
         _lineConfig.Data.Datasets.Add(statementsDataset);
