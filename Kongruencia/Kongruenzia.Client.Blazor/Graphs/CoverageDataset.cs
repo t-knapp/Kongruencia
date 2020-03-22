@@ -9,12 +9,12 @@ namespace Kongruenzia.Client.Blazor.Graphs
 {
     public class CoverageDataset
     {
-        public static LineDataset<T> Create<T>(string label, string backgroundColor, string borderColor) where T : class
+        public static LineDataset<T> Create<T>(string label, ECoverageType type) where T : class
         {
             return new LineDataset<T>
             {
-                BackgroundColor = backgroundColor,
-                BorderColor = borderColor,
+                BackgroundColor = ColorHelper.GetCoverageTypeColor(type),
+                BorderColor = ColorHelper.GetCoverageTypeColor(type),
                 Label = label,
                 Fill = false,
                 BorderWidth = 2,
