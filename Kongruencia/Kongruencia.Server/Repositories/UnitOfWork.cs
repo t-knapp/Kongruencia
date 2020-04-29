@@ -12,7 +12,7 @@ namespace Kongruencia.Server {
 
         private readonly Lazy<IRepository<Coverage>> _coverageRepository;
 
-        public IRepository<Coverage> coverageRepository => _coverageRepository.Value;
+        public IRepository<Coverage> CoverageRepository => _coverageRepository.Value;
 
 
         public UnitOfWork( SQLiteContext context ) {

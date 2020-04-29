@@ -8,7 +8,7 @@ namespace Kongruencia.Server {
 
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<Coverage> coverageRepository { get; }
+        IRepository<Coverage> CoverageRepository { get; }
 
         Task CompleteAsync();
     }

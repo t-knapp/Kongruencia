@@ -16,13 +16,13 @@ namespace Kongruencia.Server {
 
         public async Task<ServiceResult<IEnumerable<Coverage>>> ListAsync(Expression<Func<Coverage, bool>> filter = null)
         {
-            var list = await _unitOfWork.coverageRepository.GetAsync(filter);
+            var list = await _unitOfWork.CoverageRepository.GetAsync(filter);
             return new ServiceResult<IEnumerable<Coverage>>(list);
         }
 
         public async Task<ServiceResult<Coverage>> GetAsync(int id)
         {
-            var coverage = await _unitOfWork.coverageRepository.GetAsync(id);
+            var coverage = await _unitOfWork.CoverageRepository.GetAsync(id);
             return new ServiceResult<Coverage>(coverage);
         }
 
@@ -36,7 +36,7 @@ namespace Kongruencia.Server {
             if (list.isSuccess && list.result.Count() > 0)
                 return new ServiceResult<Coverage>("Coverage already exists");
 
-            await _unitOfWork.coverageRepository.AddAsync(coverage);
+            await _unitOfWork.CoverageRepository.AddAsync(coverage);
             await _unitOfWork.CompleteAsync();
             return new ServiceResult<Coverage>(coverage);
         }
