@@ -14,4 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Kongruencia/Kongruencia.Server/Dockerfile --tag kongruenzia.server:$(date +%s)
+      run: docker build Kongruencia/Kongruencia.Server --file Dockerfile --tag kongruenzia.server:$(date +%s)
