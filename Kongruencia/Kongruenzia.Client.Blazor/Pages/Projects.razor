@@ -1,0 +1,37 @@
+﻿@using System.Net.Http
+@inject HttpClient Http
+
+@page "/"
+<!DOCTYPE html>
+
+<h1>Projects</h1>
+
+@if (ProductNames is null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+<ul>
+    @foreach (var productName in ProductNames)
+    {
+    <li>
+        <NavLink class="nav-link" href="@(CreateLink( productName ))">
+            @productName
+        </NavLink>
+    </li>
+    }
+</ul>
+}
+
+@code {
+    public string[] ProductNames { get; set; }
+
+    protected override async Task OnInitializedAsync() =>
+        ProductNames = await Http.GetJsonAsync<string[]>("https://localhost:5001/api/products");
+
+    public string CreateLink(string productName)
+    {
+        return "project/" + productName;
+    }
+}

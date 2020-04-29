@@ -8,14 +8,11 @@ namespace Kongruencia.Server {
 
     public class CoverageResource
     {
-        public string ProductName { get; set; }
-        public string BranchName { get; set; }
-        public int BuildNumber { get; set; }
-
-
-        public CoverageResource(string productName, string branchName, int buildNumber) =>
-            (ProductName, BranchName, BuildNumber) = (productName, branchName, buildNumber);
-
-        // TODO: Coverage Values queried from DB.s
+        public int Id { get; private set; }
+        public DateTime Timestamp { get; private set; }
+        public Metrics Metrics { get; private set; }
+        public string ProductName { get; private set; }
+        public string BranchName { get; private set; }
+        public int BuildNumber { get; private set; }
     }
 }

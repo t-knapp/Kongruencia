@@ -7,16 +7,11 @@ namespace Kongruencia.Server
 {
     public class Coverage
     {
-
-        public int id { get; private set; } 
-
-        public DateTime timestamp { get; private set; }
-        public Metrics metrics { get; private set; }
-
-        public Product product { get; private set; }
-        public Branch branch { get; private set; }
-        public Build build { get; private set; }
-
-        public IEnumerable<Package> packages { get; private set; }
+        public int Id { get; private set; } 
+        public DateTime Timestamp { get; private set; }
+        public Metrics Metrics { get; private set; }
+        public string ProductName { get; private set; }
+        public string BranchName { get; private set; }
+        public int BuildNumber { get; private set; }
     }
 }

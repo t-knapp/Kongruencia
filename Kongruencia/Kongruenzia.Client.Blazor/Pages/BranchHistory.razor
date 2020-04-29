@@ -1,0 +1,88 @@
+﻿@using Kongruencia.Data.Domain.Models
+@using System.Net.Http
+@using System.Web;
+@using Kongruenzia.Client.Blazor.Graphs
+@using ChartJs.Blazor.Charts
+@using ChartJs.Blazor.ChartJS.LineChart
+@using ChartJs.Blazor.ChartJS.Common.Time
+
+@inject HttpClient Http
+
+@page "/history/{ProjectName}/branch/{BranchName}"
+
+<h1>Branch History</h1>
+<h2>Project: @(ProjectName)</h2>
+<h3>Branch: @(BranchName)</h3>
+
+@if (Coverages is null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <ChartJsLineChart @ref="_statementsChart" Config="@_statementsConfig" Width="600" Height="200" />
+    <ChartJsLineChart @ref="_branchesChart" Config="@_branchesConfig" Width="600" Height="200" />
+    <ChartJsLineChart @ref="_methodsChart" Config="@_methodsConfig" Width="600" Height="200" />
+}
+
+@code {
+    [Parameter]
+    public string ProjectName { get; set; }
+    [Parameter]
+    public string BranchName { get; set; }
+    public Coverage[] Coverages { get; set; }
+
+
+    private LineConfig _statementsConfig;
+    private LineConfig _branchesConfig;
+    private LineConfig _methodsConfig;
+    private ChartJsLineChart _statementsChart;
+    private ChartJsLineChart _branchesChart;
+    private ChartJsLineChart _methodsChart;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Coverages = await Http.GetJsonAsync<Coverage[]>(
+            String.Format(
+                    "https://localhost:5001/api/coverages?productName={0}&branchName={1}",
+                HttpUtility.UrlEncode(ProjectName),
+                HttpUtility.UrlEncode(BranchName)
+
+            ));
+
+        _statementsConfig = LineGraphConfig.Create("Statements");
+        var statementsDataset = CoverageDataset.Create<TimeTuple<int>>("Total", ECoverageType.TOTAL);
+        statementsDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.statements)));
+        var coveredStatementsDataset = CoverageDataset.Create<TimeTuple<int>>("Covered", ECoverageType.COVERED);
+        coveredStatementsDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.coveredstatements)));
+        var uncoveredStatementsDataset = CoverageDataset.Create<TimeTuple<int>>("Uncovered", ECoverageType.UNCOVERED);
+        uncoveredStatementsDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.statements - c.Metrics.coveredstatements)));
+        _statementsConfig.Data.Datasets.Add(statementsDataset);
+        _statementsConfig.Data.Datasets.Add(coveredStatementsDataset);
+        _statementsConfig.Data.Datasets.Add(uncoveredStatementsDataset);
+
+        _branchesConfig = LineGraphConfig.Create("Branches");
+        var branchesDataset = CoverageDataset.Create<TimeTuple<int>>("Total", ECoverageType.TOTAL);
+        branchesDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.conditionals)));
+        var coveredBranchesDataset = CoverageDataset.Create<TimeTuple<int>>("Covered", ECoverageType.COVERED);
+        coveredBranchesDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.coveredconditionals)));
+        var uncoveredBranchesDataset = CoverageDataset.Create<TimeTuple<int>>("Uncovered", ECoverageType.UNCOVERED);
+        uncoveredBranchesDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.conditionals - c.Metrics.coveredconditionals)));
+        _branchesConfig.Data.Datasets.Add(branchesDataset);
+        _branchesConfig.Data.Datasets.Add(coveredBranchesDataset);
+        _branchesConfig.Data.Datasets.Add(uncoveredBranchesDataset);
+
+        _methodsConfig = LineGraphConfig.Create("Methods");
+        var methodsDataset = CoverageDataset.Create<TimeTuple<int>>("Total", ECoverageType.TOTAL);
+        methodsDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.methods)));
+        var coveredMethodsDataset = CoverageDataset.Create<TimeTuple<int>>("Covered", ECoverageType.COVERED);
+        coveredMethodsDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.coveredmethods)));
+        var uncoveredMethodsDataset = CoverageDataset.Create<TimeTuple<int>>("Uncovered", ECoverageType.UNCOVERED);
+        uncoveredMethodsDataset.AddRange(Coverages.Select(c => new TimeTuple<int>(new Moment(c.Timestamp), c.Metrics.methods - c.Metrics.coveredmethods)));
+        _methodsConfig.Data.Datasets.Add(methodsDataset);
+        _methodsConfig.Data.Datasets.Add(coveredMethodsDataset);
+        _methodsConfig.Data.Datasets.Add(uncoveredMethodsDataset);
+    }
+
+}
