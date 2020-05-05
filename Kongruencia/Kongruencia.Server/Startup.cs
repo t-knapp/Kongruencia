@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kongruencia.Server
 {
@@ -24,7 +25,8 @@ namespace Kongruencia.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFrameworkSqlite().AddDbContext<SQLiteContext>();
+            services.AddDbContext<SQLiteContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("Sqlite")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddControllers();

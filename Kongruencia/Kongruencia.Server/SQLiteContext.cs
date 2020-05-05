@@ -13,7 +13,7 @@ namespace Kongruencia.Server {
         //public DbSet<Build> Builds { get; set; }
         public DbSet<Coverage> Coverages { get; set; }
         
-        protected override void OnConfiguring( DbContextOptionsBuilder options )
-            => options.UseSqlite( "Data Source=Kongruencia.db" );
+        public SQLiteContext(DbContextOptions<SQLiteContext> options)
+            : base(options) { }
     }
 }
