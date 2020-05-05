@@ -19,6 +19,9 @@ namespace Kongruencia.Server {
                 {
                     logging.AddConsole();
                 })
+                .ConfigureAppConfiguration((builderContext, config) => {
+                    config.AddJsonFile("settings/appsettings.runtime.json", optional: true);
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
