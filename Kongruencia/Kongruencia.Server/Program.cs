@@ -20,7 +20,7 @@ namespace Kongruencia.Server {
                     logging.AddConsole();
                 })
                 .ConfigureAppConfiguration((builderContext, config) => {
-                    config.AddJsonFile("settings/appsettings.runtime.json", optional: true);
+                    config.AddJsonFile("var/appsettings.json", optional: true);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
