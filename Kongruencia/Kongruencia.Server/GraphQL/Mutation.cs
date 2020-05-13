@@ -26,5 +26,8 @@ namespace Kongruencia.Server.GraphQL {
 
         public Task<Build> CreateBuild( AddBuildCommand.Input build )
             => _mediator.Send( build );
+
+        public Task<Build> UploadCoverageFile( UploadCoverageCommand.Input coverage )
+            => _mediator.Send( coverage );
     } 
 }
