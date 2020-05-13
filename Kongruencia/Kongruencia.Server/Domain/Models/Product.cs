@@ -6,6 +6,7 @@ using HotChocolate;
 using HotChocolate.Types;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Entities;
 using MongoDB.Entities.Core;
 
 namespace Kongruencia.Server {

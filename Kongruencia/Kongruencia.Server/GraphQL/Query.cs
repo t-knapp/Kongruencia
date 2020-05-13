@@ -12,6 +12,7 @@ namespace Kongruencia.Server.GraphQL {
     public class Query {
 
         [UseFiltering]
+        [UseSorting]
         public IQueryable<Product> Products( [Service] IMongoCollection<Product> products )
             => products.AsQueryable();
 

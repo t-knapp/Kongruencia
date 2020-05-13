@@ -54,10 +54,14 @@ namespace Kongruencia.Server {
                 .AddServices( sp )
                 .AddAuthorizeDirectiveType()
 
-                .AddQueryType<Query>()
-                .AddMutationType<Mutation>()
+                .AddQueryType<QueryType>()
+                .AddMutationType<MutationType>()
+
+                .AddType<AddBuildInputType>()
+                .AddType<UploadCoverageInputType>()
 
                 .AddType<ProductType>()
+                //.AddType<ProductType>()
                 //.AddSubscriptionType<SubscriptionType>()
 
                 .Create()
