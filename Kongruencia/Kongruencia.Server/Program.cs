@@ -9,19 +9,17 @@ using Microsoft.Extensions.Logging;
 
 namespace Kongruencia.Server {
 
-    public class Program
-    {
-        public static async Task Main(string[] args) => await CreateHostBuilder(args).Build().RunAsync();
+    public class Program {
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureLogging(logging =>
-                {
+        public static async Task Main( string[] args ) => await CreateHostBuilder( args ).Build().RunAsync();
+
+        public static IHostBuilder CreateHostBuilder( string[] args ) 
+            => Host.CreateDefaultBuilder( args )
+                .ConfigureLogging( logging => {
                     logging.AddConsole();
-                })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
+                } )
+                .ConfigureWebHostDefaults( webBuilder => {
                     webBuilder.UseStartup<Startup>();
-                });
+                } );
     }
 }

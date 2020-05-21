@@ -2,14 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotChocolate;
+using HotChocolate.Types;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Kongruencia.Server {
 
 	public class Branch {
 
-		public int id { get; private set; }
-		public string branchName { get; private set; }
+		[BsonElement]
+		private IList<Build> _builds = new List<Build>();
 
-		public IEnumerable<Build> builds { get; private set; }
+		public string BranchName { get; private set; }
+
+		[BsonIgnore]
+		[UseFiltering]
+		public IEnumerable<Build> Builds => _builds;
+
+
+		public Branch( string name )
+			=> BranchName = name;
+
+
+		[GraphQLIgnore]
+		public Build AddBuild( int buildNumber, Coverage coverage ) 
+			=> _builds.AddAndReturn( new Build( buildNumber, coverage ) );
 	}
 }

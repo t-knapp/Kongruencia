@@ -2,24 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotChocolate;
+using HotChocolate.Types;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Entities;
+using MongoDB.Entities.Core;
 
 namespace Kongruencia.Server {
 
-	public class Product {
+	public class Product : Entity {
 
-		public int id { get; private set; }
-		public string productName { get; private set; }
-		public IEnumerable<Branch> branches { get; private set; }
+		[BsonElement]
+		private IList<Branch> _branches = new List<Branch>();
+
+		public string ProductName { get; private set; }
+
+		[BsonIgnore]
+		[UseFiltering]
+		public IEnumerable<Branch> Branches => _branches;
 
 
-		public Product( string productName ) => this.productName = productName;
+		public Product( string productName ) 
+			=> ProductName = productName;
 
 
-		public void AddBranch() {
+		[GraphQLIgnore]
+		public Branch AddBranch( string branchName )
+			=> _branches.AddAndReturn( new Branch( branchName ));
 
-		}
-		public void RemoveBranch() {
-
-		}
+		[GraphQLIgnore]
+		public void RemoveBranch( string branchName ) {
+			var branch = _branches.SingleOrDefault( b => b.BranchName == branchName );
+			if( branch != null )
+				_branches.Remove( branch );
+        }
 	}
 }
