@@ -42,7 +42,11 @@ namespace Kongruencia.Server {
             services
                 .AddSingleton<DB>( s => {
                     var options = s.GetService<IOptions<MongoDBOptions>>();
-                    return new DB( options.Value.Database, options.Value.Address, options.Value.Port );
+                    var settings = new MongoClientSettings()
+                    {
+                        Credential = MongoCredential.CreateCredential("admin", options.Value.Username, options.Value.Password)
+                    };
+                    return new DB(settings, options.Value.Database);
                 } )
                 .AddSingleton( typeof( IMongoCollection<> ), typeof( MongoCollection<> ) );
 
