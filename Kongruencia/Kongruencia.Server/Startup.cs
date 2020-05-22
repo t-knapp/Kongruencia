@@ -44,7 +44,8 @@ namespace Kongruencia.Server {
                     var options = s.GetService<IOptions<MongoDBOptions>>();
                     var settings = new MongoClientSettings()
                     {
-                        Credential = MongoCredential.CreateCredential("admin", options.Value.Username, options.Value.Password)
+                        Credential = MongoCredential.CreateCredential("admin", options.Value.Username, options.Value.Password),
+                        Server = new MongoServerAddress(options.Value.Address, options.Value.Port)
                     };
                     return new DB(settings, options.Value.Database);
                 } )
