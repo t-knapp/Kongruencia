@@ -21,3 +21,5 @@ jobs:
         name: tknapp/tknapp/kongruenzia.server
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: Kongruencia/Kongruencia.Server/Dockerfile
+        
