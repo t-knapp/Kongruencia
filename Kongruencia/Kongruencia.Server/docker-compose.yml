@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+      volumes:
+        - ~/kongruencia.server/data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: #ChoosePassword
+
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8181:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: #ChoosePassword
+
+
+  kongruencia-server:
+    image: tknapp/kongruenzia.server:latest
+    restart: always
+    ports:
+      - 5000:80
+    environment:
+      MongoDB__Address: mongo
+      MongoDB__Username: root
+      MongoDB__Password: #ChoosePassword
+    depends_on:
+      - mongo
