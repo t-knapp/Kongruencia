@@ -28,12 +28,11 @@ namespace Kongruencia.Server.Controller
         {
             try
             {
-                // TODO: Ya ya, I know. More sophisticated usage of AutoMapper
-                var command = new AddBuildCommand.Input(
+                var command = new UploadCoverageCommand.Input(
                     addCoverageResource.ProductName,
                     addCoverageResource.BranchName,
                     addCoverageResource.Buildnumber,
-                    _mapper.Map<Coverage>(addCoverageResource.Coverage)
+                    addCoverageResource.Coverage
                 );
                 var build = await _mediator.Send(command);
                 return Ok(build);
@@ -41,7 +40,7 @@ namespace Kongruencia.Server.Controller
             catch (Exception ex)
             {
                 // TODO: Logging
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }

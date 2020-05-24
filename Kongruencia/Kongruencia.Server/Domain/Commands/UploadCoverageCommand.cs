@@ -39,12 +39,16 @@ namespace Kongruencia.Server.Commands {
                 .Find( p => p.ProductName == request.ProductName )
                 .SingleOrDefaultAsync( cancellationToken );
 
-            if( product is null )
-                throw new ArgumentException( $"Product with name {request.ProductName} couldnt be found!" );
+            if( product is null ) {
+                product = new Product(request.ProductName);
+                await _productCollection.InsertOneAsync(product, null, cancellationToken);
+            }
 
             var branch = product.Branches.SingleOrDefault( b => b.BranchName == request.BranchName );
-            if( branch is null )
-                throw new ArgumentException( $"Branch with name {request.BranchName} couldnt be found!" );
+            if( branch is null ) {
+                branch = product.AddBranch(request.BranchName);
+                await product.SaveAsync(cancellationToken);
+            }
 
             //TODO: Could use automapper to do this... Ez Clap
             var project = request.Coverage.project;
