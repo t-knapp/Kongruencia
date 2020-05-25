@@ -15,10 +15,9 @@ namespace Kongruencia.Server.Controller
     public class CoveragesController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
-        public CoveragesController(IMediator mediator, IMapper mapper)
-            => (_mediator, _mapper) = (mediator, mapper);
+        public CoveragesController(IMediator mediator)
+            => (_mediator) = (mediator);
 
         [HttpPost]
         [Consumes("application/xml")]

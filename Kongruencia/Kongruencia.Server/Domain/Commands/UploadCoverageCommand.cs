@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using MongoDB.Driver;
 using MongoDB.Entities;
@@ -28,10 +29,11 @@ namespace Kongruencia.Server.Commands {
         }
 
         private readonly IMongoCollection<Product> _productCollection;
+        private readonly IMapper _mapper;
 
 
-        public UploadCoverageCommand( IMongoCollection<Product> productCollection )
-            => _productCollection = productCollection;
+        public UploadCoverageCommand( IMongoCollection<Product> productCollection, IMapper mapper )
+            => ( _productCollection, _mapper ) = ( productCollection, mapper );
 
 
         public async Task<Build> Handle( Input request, CancellationToken cancellationToken ) {
@@ -50,15 +52,7 @@ namespace Kongruencia.Server.Commands {
                 await product.SaveAsync(cancellationToken);
             }
 
-            //TODO: Could use automapper to do this... Ez Clap
-            var project = request.Coverage.project;
-            var coverage = new Coverage {
-                Timestamp = DateTime.FromFileTimeUtc( long.Parse( project.timestamp ) ),
-                Statements = new Coverage.Metric( int.Parse( project.metrics.statements ), int.Parse( project.metrics.coveredstatements ) ),
-                Conditionals = new Coverage.Metric( int.Parse( project.metrics.conditionals ), int.Parse( project.metrics.coveredconditionals ) ),
-                Methods = new Coverage.Metric( int.Parse( project.metrics.methods ), int.Parse( project.metrics.coveredmethods ) ),
-                Elements = new Coverage.Metric( int.Parse( project.metrics.elements ), int.Parse( project.metrics.coveredelements ) )
-            };
+            var coverage = _mapper.Map<Coverage>(request.Coverage);
             var build = branch.AddBuild( request.BuildNumber, coverage );
             await product.SaveAsync();
             return build;
